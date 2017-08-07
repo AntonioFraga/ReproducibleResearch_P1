@@ -1,0 +1,79 @@
+#EJERCICIO_1
+```{r}
+setwd("C:/Coursera/Reproresearch")
+```
+1-Code for reading in the dataset and/or processing the data
+
+```{r}
+data<-read.csv("activity.csv")
+```
+2- Calculate the total steps by day
+```{r}
+Pasospordia<-aggregate(steps~date, data=data,FUN=sum,na.rm=TRUE)
+```
+3-Make a histogram of the total number of steps taken each day
+```{r}
+hist(Pasospordia$steps, 
+     main="PASOS POR DÍA", 
+     xlab="Número de pasos", 
+     ylab = "Frecuencia",
+     col="red", breaks=25)
+```
+
+
+
+
+4. Mean and median
+
+```{r}
+Mediapasos<-mean(Pasospordia$steps)
+Medianapasos<-median(Pasospordia$steps)
+Mediapasos
+Medianapasos
+```
+
+5.Time series plot of average number steps taken
+```{r}
+Mediacincomin<-aggregate(steps~interval, data=data,FUN=mean,na.rm=TRUE)
+plot(x = Mediacincomin$interval, 
+     y = Mediacincomin$steps, 
+     type = "l", 
+     col = "Red",
+     xlab = "5-minute Intervals",
+     ylab = "Average Steps Taken ~ Days",
+     main = "Average Daily Activity Pattern")
+```
+6.The 5-minute interval that, on average, contains the maximum number of steps
+```{r}
+Maxsteps<-Mediacincomin$interval[which.max(Mediacincomin$steps)]
+Maxsteps
+```
+7.Calculate the number of missing values
+```{r}
+Missing<-sum(is.na(data$steps))
+Missing
+```
+8.Filling all the values in the dataset with the mean for the day
+```{r}
+data2 <- data
+nas <- is.na(data2$steps)
+avg_interval <- tapply(data2$steps, data2$interval, mean, na.rm=TRUE, simplify = TRUE)
+data2$steps[nas] <- avg_interval[as.character(data2$interval[nas])]
+names(data2)
+```
+9. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
+```{r}
+Pasospordia2<-aggregate(steps~date, data=data2,FUN=sum,na.rm=TRUE)
+
+hist(Pasospordia2$steps, 
+     main="PASOS POR DÍA", 
+     xlab="Número de pasos", 
+     ylab = "Frecuencia",
+     col="red", breaks=25)
+#Differences in the quartiles can be seen
+```
+I have not completed all the tasks
+
+
+```
+
